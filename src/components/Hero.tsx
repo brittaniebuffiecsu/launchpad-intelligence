@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Sparkles, Rocket, TrendingUp } from "lucide-react";
+import { Sparkles, Rocket, TrendingUp, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface HeroProps {
   onGenerateClick: () => void;
@@ -74,6 +75,22 @@ const Hero = ({ onGenerateClick, onValidateClick }: HeroProps) => {
             <TrendingUp className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
             Validate My Idea
           </button>
+        </motion.div>
+
+        {/* Admin Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-8"
+        >
+          <Link
+            to="/admin"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Shield className="w-4 h-4" />
+            Admin Dashboard
+          </Link>
         </motion.div>
 
         {/* Stats */}
