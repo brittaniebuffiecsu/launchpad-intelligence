@@ -61,6 +61,21 @@ const AnalyticsDashboard = () => {
 
   useEffect(() => {
     fetchData();
+
+    const channel = supabase
+      .channel("analytics-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "analytics_data" },
+        () => {
+          fetchData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
