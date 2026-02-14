@@ -35,17 +35,28 @@ const Admin = () => {
         navigate("/auth");
         return;
       }
-      setUser(session.user);
 
-      // Fetch user role
+      // Verify user has an admin role before granting access
       const { data: roles } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user_id", session.user.id);
 
-      if (roles && roles.length > 0) {
-        setUserRole(roles[0].role);
+      const adminRoles = ["platform_admin", "researcher", "sales_rep", "analyst", "integration_manager"];
+      const userRole = roles?.find(r => adminRoles.includes(r.role));
+
+      if (!userRole) {
+        toast({
+          title: "Access Denied",
+          description: "You don't have permission to access the admin dashboard.",
+          variant: "destructive",
+        });
+        navigate("/");
+        return;
       }
+
+      setUser(session.user);
+      setUserRole(userRole.role);
       setLoading(false);
     };
 
